@@ -25,3 +25,6 @@ python qqmusic.py
 
 # 预览
 ![avatar](./imgs/1.png)
+
+# 其他
+侵删
