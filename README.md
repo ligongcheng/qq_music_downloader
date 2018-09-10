@@ -1,5 +1,6 @@
 # 说明
 本工具用来下载qq音乐无损资源的小工具
+
 链接支持：
 ```
     歌曲链接 如 https://y.qq.com/n/yqq/song/003Afb7F2LwcmR.html
