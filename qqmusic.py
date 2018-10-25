@@ -171,7 +171,7 @@ if __name__ == '__main__':
     if vkey == None:
         print('获取key失败，正在退出。。。')
         time.sleep(2)
-        os._exit(1)
+        os._exit(0)
 
     print('''
     欢迎使用qq音乐下载工具
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     ''')
 
     in_down_type = input("输入序号,按回车默认flac:")
-    if in_down_type is "" or int(in_down_type) not in range(0, 4):
+    if in_down_type is "" or in_down_type not in ['0','1','2','3']:
         print('格式:flac')
     else:
         down_type = size_list[int(in_down_type)]
@@ -201,9 +201,9 @@ if __name__ == '__main__':
 
     while True:
         link = str(input('请输入链接:'))
-        if link == 'q' or 'qq.com' not in link:
+        if link == 'q':
             print('正在退出。。。')
-            os._exit(1)
+            os._exit(0)
         if 'song' in link:
             print('该链接为qq歌曲链接，正在解析。。。')
             song = parse_song(link)
