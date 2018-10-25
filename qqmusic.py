@@ -54,7 +54,6 @@ def download(single_info, down_path):
         return
     if not os.path.exists(down_path):
         os.makedirs(down_path)
-    song_name = single_info['song_name'] + '-' + single_info['singer_name']
 
     if down_type not in size_list:
         print('输入格式错误')
@@ -64,7 +63,8 @@ def download(single_info, down_path):
     except:
         url = single_info['link_info'][size_list[length - 1]]['link']
     type = re.search(r'(mp3|ape|flac)', url).group(0)
-    song_path = down_path + '/' + song_name + '.' + type
+    song_name = single_info['song_name'] + '-' + single_info['singer_name'] + '.' + type
+    song_path = down_path + '/' + song_name
     if os.path.exists(song_path):
         getsize = os.path.getsize(song_path)
         if getsize == 0:
@@ -183,20 +183,21 @@ if __name__ == '__main__':
     下载歌曲格式 128mp3 , 320mp3 , ape , flac  若无选择的音质则默认下载音质最好的
     输入链接时输入 q 退出本工具
     
+    输入序号(0,1,2,3)
+    
+    0. 代表128kmp3 
+    1. 代表320kmp3
+    2. 代表ape
+    3. 代表flac 
+    
     ''')
-    dls = input('是否开启下载（y/n）按回车默认开启：')
-    if dls.strip() == 'n':
-        dl = False
-    if dl:
-        print('开启下载')
-    else:
-        print('不开启下载')
 
-    in_down_type = input("输入下载歌曲格式（size_128mp3 , size_320mp3 , size_ape , size_flac ）按回车默认size_flac:")
-    if in_down_type.strip() not in size_list:
-        print('未输入，或有错误，采取默认size_flac')
+    in_down_type = input("输入序号,按回车默认flac:")
+    if in_down_type is "" or int(in_down_type) not in range(0, 4):
+        print('格式:flac')
     else:
-        down_type = in_down_type.strip()
+        down_type = size_list[int(in_down_type)]
+        print('格式:', down_type)
 
     while True:
         link = str(input('请输入链接:'))
@@ -214,7 +215,7 @@ if __name__ == '__main__':
             playlist_info = get_playlist_info(playlist_id, vkey)
             # print(playlist_info)
         elif 'album' in link:
-            print('该链接为qq专辑链接，正在开发中，暂不支持。。。')
+            print('该链接为qq专辑链接，正在开发中。。。')
         else:
             print('链接错误')
 
