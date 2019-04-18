@@ -20,7 +20,6 @@ pip install requests
 ``` 
 2、使用
 python music.v2.py
-输入10位歌单id号即可
 ```
 
 # 感谢
