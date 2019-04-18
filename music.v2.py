@@ -8,12 +8,13 @@ import sys
 api_url = 'https://api.bzqll.com/music/tencent/songList?key=579621905&id='
 song_url = 'https://api.itooi.cn/music/tencent/song?key=579621905&id='
 m_id = '6940396907'  # 歌单的id
-path = os.getcwd() + '\\music\\' + m_id + '\\'  # 保存的路径
+path = os.getcwd() + '\\download\\' + m_id + '\\'  # 保存的路径
 
 
 # 保存歌曲
 def save_song(url, singer, name, lrc):
     global path
+    path = os.getcwd() + '\\download\\' + m_id + '\\'  # 保存的路径
     if not os.path.exists(path):
         os.makedirs(path)
     mp3_path = path + name + '-' + singer + ".mp3"
@@ -81,9 +82,9 @@ if __name__ == '__main__':
         response_dict = r.json()
         res = response_dict['data']['songs']
         lenght = response_dict['data']['songnum']
+        left = int(lenght)
         print('total ' + str(lenght))
         for i in range(int(lenght)):
-            mode = 1
             name = res[i]['name']
             name = validateTitle(name)
             url = res[i]['url']
@@ -91,6 +92,8 @@ if __name__ == '__main__':
             singer = res[i]['singer'].replace('/', '&')
             try:
                 save_song(url, singer, name, lrc)
+                left = left - 1
+                print('left  ' + str(left))
             except Exception as e:
                 print('error ' + name)
                 traceback.print_exc()
