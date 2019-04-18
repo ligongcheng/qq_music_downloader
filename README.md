@@ -5,6 +5,8 @@
 ```
     歌单链接 如 https://y.qq.com/n/yqq/playlist/863753969.html 
             或 https://y.qq.com/n/yqq/playsquare/4160828085.html#stat=y_new.playlist.dissnam
+    歌曲链接 如 https://y.qq.com/n/yqq/song/002u0fTY2HoJJp.html
+    需要提取出歌单id如 86375396 歌曲id如 002u0fTY2HoJJp
 ```
 # 要求
 python3
