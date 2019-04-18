@@ -23,7 +23,7 @@ python music.v2.py
 ```
 
 # 感谢
-感谢<a href='https://www.bzqll.com'>博主：鼻子亲了脸</a>提供的api
+感谢<a href='https://www.bzqll.com' target='_blank'>博主：鼻子亲了脸</a>提供的api
 
 # 其他
 侵删
