@@ -6,6 +6,7 @@ import requests, re, os, time
 import sys
 
 api_url = 'https://api.bzqll.com/music/tencent/songList?key=579621905&id='
+song_url = 'https://api.itooi.cn/music/tencent/song?key=579621905&id='
 m_id = '6940396907'  # 歌单的id
 path = os.getcwd() + '\\music\\' + m_id + '\\'  # 保存的路径
 
@@ -19,15 +20,15 @@ def save_song(url, singer, name, lrc):
     flac_path = path + name + '-' + singer + ".flac"
     if os.path.exists(mp3_path):
         if os.path.getsize(mp3_path) > 0:
-            print('exist skip  ' + name + '-' + singer)
+            print('exist skip  ' + mp3_path)
             return
     if os.path.exists(flac_path):
         if os.path.getsize(flac_path) > 0:
-            print('exist skip  ' + name + '-' + singer)
+            print('exist skip  ' + flac_path)
             return
-    resource = get_page(url + '&br=flac', True)
+    resource = get_url(url + '&br=flac', True)
     if resource.status_code != 200:
-        r = get_page(url + '&br=320', True)
+        r = get_url(url + '&br=320', True)
         if r.status_code == 200:
             with open(mp3_path, mode="wb") as fh:
                 print('dl ' + mp3_path)
@@ -44,23 +45,21 @@ def save_song(url, singer, name, lrc):
 def dl_lrc(singer, name, lrc):
     global path
     lrc_path = path + name + '-' + singer + ".lrc"
-    resource = get_page(lrc, False)
+    resource = get_url(lrc, False)
     with open(lrc_path, mode="w", encoding='utf-8') as fh:
         fh.write(resource.text)
 
 
-def get_page(url, stream):
-    su = False
+def get_url(url, stream):
     num = 5
-    r = None
-    while not su and num > 0:
+    while num > 0:
         try:
             r = requests.get(url, stream=stream, timeout=3)
-            su = True
+            return r
         except:
             print('timeout retry')
             num = num - 1
-    return r
+    return
 
 
 def validateTitle(title):
@@ -70,24 +69,46 @@ def validateTitle(title):
 
 
 if __name__ == '__main__':
-    s = input("输入qq音乐歌单id例如 6940396907 :")
-    if len(str(s).strip()) != 10:
-        print('请输入正确的10位id号')
-        time.sleep(1)
-        sys.exit()
-    m_id = str(s).strip()
-    r = requests.get(api_url + m_id)
-    response_dict = r.json()
-    res = response_dict['data']['songs']
-    lenght = response_dict['data']['songnum']
-    print('total ' + str(lenght))
-    for i in range(int(lenght)):
-        mode = 1
-        name = res[i]['name']
+    input2 = input(" 输入数字，1歌单、2单曲：")
+    if int(input2) == 1:
+        s = input("输入qq音乐歌单id例如 6940396907 :")
+        if len(str(s).strip()) != 10:
+            print('请输入正确的10位id号')
+            time.sleep(1)
+            sys.exit()
+        m_id = str(s).strip()
+        r = requests.get(api_url + m_id)
+        response_dict = r.json()
+        res = response_dict['data']['songs']
+        lenght = response_dict['data']['songnum']
+        print('total ' + str(lenght))
+        for i in range(int(lenght)):
+            mode = 1
+            name = res[i]['name']
+            name = validateTitle(name)
+            url = res[i]['url']
+            lrc = res[i]['lrc']
+            singer = res[i]['singer'].replace('/', '&')
+            try:
+                save_song(url, singer, name, lrc)
+            except Exception as e:
+                print('error ' + name)
+                traceback.print_exc()
+    elif int(input2) == 2:
+        s = input("输入qq歌曲id例如 002u0fTY2HoJJp :")
+        if len(str(s).strip()) != 14:
+            print('请输入正确的10位id号')
+            time.sleep(1)
+            sys.exit()
+        m_id = str(s).strip()
+        r = requests.get(song_url + m_id)
+        response_dict = r.json()
+        res = response_dict['data']
+        name = res['name']
         name = validateTitle(name)
-        url = res[i]['url']
-        lrc = res[i]['lrc']
-        singer = res[i]['singer'].replace('/', '&')
+        url = res['url']
+        lrc = res['lrc']
+        singer = res['singer'].replace('/', '&')
         try:
             save_song(url, singer, name, lrc)
         except Exception as e:
