@@ -70,12 +70,12 @@ def validateTitle(title):
 
 
 if __name__ == '__main__':
-    s = input("输入qq音乐歌单id:")
-    if len(str(s)) != 10:
+    s = input("输入qq音乐歌单id例如 6940396907 :")
+    if len(str(s).strip()) != 10:
         print('请输入正确的10位id号')
         time.sleep(1)
         sys.exit()
-    m_id = str(s)
+    m_id = str(s).strip()
     r = requests.get(api_url + m_id)
     response_dict = r.json()
     res = response_dict['data']['songs']
