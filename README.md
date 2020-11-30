@@ -1,6 +1,6 @@
 # 说明
 用来下载qq音乐无损资源的小工具,支持MP3，ape，flac格式下载，支持付费歌曲下载
-第一版已失效请使用 music.v2.py 文件
+已失效
 链接支持：
 ```
     歌单链接 如 https://y.qq.com/n/yqq/playlist/863753969.html 
